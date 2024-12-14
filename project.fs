@@ -5,7 +5,9 @@ open System.Windows.Forms
 
 // Function to count words
 let countWords (text: string) =
-    text.Split([|' '; '\t'; '\n'; '\r'; '.'; ','; '!'|], StringSplitOptions.RemoveEmptyEntries)
+    text.Split([|' '; '\t'; '\n'; '\r'; '.'; ','; '!'; '-'; ':'; ';'|], StringSplitOptions.RemoveEmptyEntries)
+    |> Array.map (fun word -> word.Trim([|'.'; ','; '!'|]))
+    |> Array.filter (fun word -> not (String.IsNullOrWhiteSpace(word)))
     |> Array.length
 // Function to count sentences
 let countSentences (text: string) =
