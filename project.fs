@@ -9,5 +9,13 @@ let countWords (text: string) =
     |> Array.length
 // Function to count sentences
 let countSentences (text: string) =
-    text.Split([|'.'; '!'; '?'|], StringSplitOptions.RemoveEmptyEntries)
-    |> Array.length
+    Regex.Matches(text, @"[.!?](\s|$)").Count
+
+// Function to count paragraphs
+let countParagraphs (text: string) =
+    text.Replace("\r\n", "\n")
+        .Replace("\r", "\n")
+        .Trim() // Remove leading/trailing newlines or spaces
+        .Split([|"\n\n"|], StringSplitOptions.RemoveEmptyEntries)
+        |> Array.filter (fun paragraph -> not (String.IsNullOrWhiteSpace(paragraph)))
+        |> Array.length
