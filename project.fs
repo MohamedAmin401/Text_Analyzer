@@ -28,3 +28,8 @@ let wordFrequency (text: string) =
     |> Seq.groupBy id
     |> Seq.map (fun (word, instances) -> word, Seq.length instances)
     |> Seq.sortByDescending snd
+// Function to calculate average sentence length
+let averageSentenceLength (text: string) =
+    let totalWords = countWords text
+    let totalSentences = countSentences text
+    if totalSentences > 0 then totalWords / totalSentences else 0
