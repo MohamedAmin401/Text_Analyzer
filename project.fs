@@ -78,6 +78,6 @@ analyzeButton.Click.Add(fun _ ->
             |])
 )
 
-// Run an Application
+// Run Application
 [<STAThread>]
 do Application.Run(form)
