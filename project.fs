@@ -19,3 +19,12 @@ let countParagraphs (text: string) =
         .Split([|"\n\n"|], StringSplitOptions.RemoveEmptyEntries)
         |> Array.filter (fun paragraph -> not (String.IsNullOrWhiteSpace(paragraph)))
         |> Array.length
+        
+// Function to calculate word frequency
+let wordFrequency (text: string) =
+    text.Split([|' '; '\t'; '\n'; '\r'; '.'; ','; '!'; '-'|], StringSplitOptions.RemoveEmptyEntries)
+    |> Seq.map (fun word -> word.Trim([|'.'; ','; '!'|]).ToLower())
+    |> Seq.filter (fun word -> not (String.IsNullOrWhiteSpace(word)))
+    |> Seq.groupBy id
+    |> Seq.map (fun (word, instances) -> word, Seq.length instances)
+    |> Seq.sortByDescending snd
