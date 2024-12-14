@@ -33,3 +33,37 @@ let averageSentenceLength (text: string) =
     let totalWords = countWords text
     let totalSentences = countSentences text
     if totalSentences > 0 then totalWords / totalSentences else 0
+
+    // GUI Setup
+let form = new Form(Text = "Text Analyzer", Width = 600, Height = 400)
+let inputTextBox = new TextBox(Multiline = true, Dock = DockStyle.Top, Height = 200)
+let analyzeButton = new Button(Text = "Analyze", Dock = DockStyle.Top)
+let loadFileButton = new Button(Text = "Load File", Dock = DockStyle.Top)
+let resultsTextBox = new TextBox(Multiline = true, ReadOnly = true, Dock = DockStyle.Fill)
+
+// Add controls to form
+form.Controls.Add(resultsTextBox)
+form.Controls.Add(analyzeButton)
+form.Controls.Add(loadFileButton)
+form.Controls.Add(inputTextBox)
+
+// Event Handlers
+loadFileButton.Click.Add(fun _ ->
+    let openFileDialog = new OpenFileDialog(Filter = "Text Files|*.txt")
+    if openFileDialog.ShowDialog() = DialogResult.OK then
+        inputTextBox.Text <- File.ReadAllText(openFileDialog.FileName))
+
+analyzeButton.Click.Add(fun _ ->
+    let text = inputTextBox.Text
+    let wordCount = countWords text
+    let sentenceCount = countSentences text
+    let paragraphCount = countParagraphs text
+    let avgSentenceLength = averageSentenceLength text
+    let wordFreq = wordFrequency text |> Seq.map (fun (w, c) -> sprintf "%s: %d" w c) |> String.concat "\n"
+
+    resultsTextBox.Text <- sprintf "Words: %d\n\nSentences: %d\n\nParagraphs: %d\n\nAvg Sentence Length: %d\n\nWord Frequency:\n%s" 
+                               wordCount sentenceCount paragraphCount avgSentenceLength wordFreq)
+
+// Run Application
+[<STAThread>]
+do Application.Run(form)
