@@ -37,6 +37,7 @@ let averageSentenceLength (text: string) =
     if totalSentences > 0 then totalWords / totalSentences else 0
 
   // GUI Setup
+// GUI Setup
 let form = new Form(Text = "Text Analyzer", Width = 600, Height = 400)
 let inputTextBox = new TextBox(Multiline = true, Dock = DockStyle.Top, Height = 200)
 let analyzeButton = new Button(Text = "Analyze", Dock = DockStyle.Top)
@@ -61,22 +62,10 @@ analyzeButton.Click.Add(fun _ ->
     let sentenceCount = countSentences text
     let paragraphCount = countParagraphs text
     let avgSentenceLength = averageSentenceLength text
-    let wordFreq = 
-        wordFrequency text 
-        |> Seq.map (fun (w, c) -> sprintf "%s: %d" w c) 
-        |> String.concat Environment.NewLine
+    let wordFreq = wordFrequency text |> Seq.map (fun (w, c) -> sprintf "%s: %d" w c) |> String.concat "\n"
 
-    resultsTextBox.Text <- 
-        String.Join(Environment.NewLine, 
-            [|
-                sprintf "Words: %d" wordCount
-                sprintf "Sentences: %d" sentenceCount
-                sprintf "Paragraphs: %d" paragraphCount
-                sprintf "Average Sentence Length: %.2f" avgSentenceLength
-                "Word Frequency:"
-                wordFreq
-            |])
-)
+    resultsTextBox.Text <- sprintf "Words: %d\n\nSentences: %d\n\nParagraphs: %d\n\nAvg Sentence Length: %d\n\nWord Frequency:\n%s" 
+                               wordCount sentenceCount paragraphCount avgSentenceLength wordFreq)
 
 // Run Application
 [<STAThread>]
